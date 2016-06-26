@@ -467,7 +467,6 @@ void json_close(void)  {
 
     for( i=0; myflds[i] != '\0'; i++ ) {
       j = fld_index[myflds[i]];
-      // if (j <= 0) continue; // Field nr 0, " " shouldn't be printed in this method. 
 
       strcpy(name, ",\"%s\":");
       strcat(name, json_fields[j].format);
