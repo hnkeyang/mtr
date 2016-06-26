@@ -1,17 +1,10 @@
-WHAT IS MTR?
+WHY DID YOU FORK MTR?
 
-  mtr combines the functionality of the 'traceroute' and 'ping' programs 
-  in a single network diagnostic tool.
+  I wanted JSON output and I wanted all captured performance fields as 
+well as IP, Hostname and ASN (if available) normalized into their own
+JSON fields and in a single object.  Neither the CSV or XML output do 
+this for you.  
 
-  As mtr starts, it investigates the network connection between the host
-  mtr runs on and a user-specified destination host.  After it
-  determines the address of each network hop between the machines, 
-  it sends a sequence of ICMP ECHO requests to each one to determine the 
-  quality of the link to each machine.  As it does this, it prints
-  running statistics about each machine.
-
-  mtr is distributed under the GNU General Public License version 2.
-  See the COPYING file for details.  
 
 INSTALLING
 
@@ -66,27 +59,4 @@ INSTALLING
   ./configure CFLAGS="-arch i386 -arch x86_64" LIBS="-lresolv" \
        --without-gtk --disable-endian-check --disable-dependency-tracking
 
-
-
-WHERE CAN I GET THE LATEST VERSION OR MORE INFORMATION?
-
-  mtr is now hosted on github. 
-      https://github.com/traviscross/mtr
-
-  See the mtr web page at 
-         http://www.BitWizard.nl/mtr/ 
-
-  Bug reports and feature requests should be submitted to the Github
-  bug tracking system.
-
-  Patches can be submitted by cloning the Github repository and issuing
-  a pull request, or by email to me. Please use unified diffs. Usually
-  the diff is sort of messy, so please check that the diff is clean and
-  doesn't contain too much of your local stuff (for example, I don't
-  want/need the "configure" script that /your/ automake made for you).
-
-  (There used to be a mailinglist, but all it got was spam. So
-  when the server was upgraded, the mailing list died.)
-
--- REW
 

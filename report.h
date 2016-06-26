@@ -26,3 +26,5 @@ void xml_open(void);
 void xml_close(void);
 void csv_open(void);
 void csv_close(time_t now);
+void json_open(void);
+void json_close(void);

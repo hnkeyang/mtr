@@ -116,6 +116,7 @@ struct fields {
 };
 
 extern struct fields data_fields[MAXFLD];
+extern struct fields json_fields[MAXFLD];
 
 
 /* keys: the value in the array is the index number in data_fields[] */

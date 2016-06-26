@@ -119,6 +119,28 @@ struct fields data_fields[MAXFLD] = {
   {'\0', NULL, NULL, NULL, 0, NULL}
 };
 
+struct fields json_fields[MAXFLD] = {
+  /* key, Remark, Header, Format, Width, CallBackFunc */
+  {' ', "<sp>: Space between fields", " ",  " ",        1, &net_drop  },
+  {'L', "L: Loss Ratio",          "losspercent","%.1f",   6, &net_loss  },
+  {'D', "D: Dropped Packets",     "drop",       "%d",     5, &net_drop  },
+  {'R', "R: Received Packets",    "received",   "%d",     6, &net_returned},
+  {'S', "S: Sent Packets",        "sent",       "%d",     6, &net_xmit  },
+  {'N', "N: Newest RTT(ms)",      "last",       "%.1f",   6, &net_last  },
+  {'B', "B: Min/Best RTT(ms)",    "best",       "%.1f",   6, &net_best  },
+  {'A', "A: Average RTT(ms)",     "avg",        "%.1f",   6, &net_avg   },
+  {'W', "W: Max/Worst RTT(ms)",   "worst",      "%.1f",   6, &net_worst },
+  {'V', "V: Standard Deviation",  "stddev",     "%.1f",   6, &net_stdev },
+  {'G', "G: Geometric Mean",      "geomean",    "%.1f",   6, &net_gmean },
+  {'J', "J: Current Jitter",      "jitter",     "%.1f",   5, &net_jitter},
+  {'M', "M: Jitter Mean/Avg.",    "jitteravg",  "%.1f",   5, &net_javg  },
+  {'X', "X: Worst Jitter",        "jittermax",  "%.1f",   5, &net_jworst},
+  {'I', "I: Interarrival Jitter", "jitterint",  "%.1f",   5, &net_jinta },
+  {'\0', NULL, NULL, NULL, 0, NULL}
+};
+
+
+
 typedef struct names {
   char*                 name;
   struct names*         next;
@@ -278,6 +300,7 @@ void parse_arg (int argc, char **argv)
     { "report",         0, NULL, 'r' },
     { "report-wide",    0, NULL, 'w' },
     { "xml",            0, NULL, 'x' },
+    { "json",           0, NULL, 'j' },
     { "curses",         0, NULL, 't' },
     { "gtk",            0, NULL, 'g' },
     { "raw",            0, NULL, 'l' },
@@ -318,7 +341,7 @@ void parse_arg (int argc, char **argv)
   opt = 0;
   while(1) {
     opt = getopt_long(argc, argv,
-		      "hv46F:rwxtglCpnbo:y:zi:c:s:B:Q:ea:f:m:uTSP:L:Z:M:", long_options, NULL);
+		      "hv46F:rwxjtglCpnbo:y:zi:c:s:B:Q:ea:f:m:uTSP:L:Z:M:", long_options, NULL);
     if(opt == -1)
       break;
 
@@ -354,6 +377,9 @@ void parse_arg (int argc, char **argv)
       break;
     case 'x':
       DisplayMode = DisplayXML;
+      break;
+    case 'j':
+      DisplayMode = DisplayJSON;
       break;
 
     case 'd':
@@ -529,6 +555,7 @@ void parse_arg (int argc, char **argv)
   if (DisplayMode == DisplayReport ||
       DisplayMode == DisplayTXT ||
       DisplayMode == DisplayXML ||
+      DisplayMode == DisplayJSON ||
       DisplayMode == DisplayRaw ||
       DisplayMode == DisplayCSV)
     Interactive = 0;
@@ -627,7 +654,7 @@ int main(int argc, char **argv)
   if (PrintHelp) {
        printf("usage: %s [--help] [--version] [-4|-6] [-F FILENAME]\n"
               "\t\t[--report] [--report-wide] [--displaymode MODE]\n"
-              "\t\t[--xml] [--gtk] [--curses] [--raw] [--csv] [--split]\n"
+              "\t\t[--xml] [--json] [--gtk] [--curses] [--raw] [--csv] [--split]\n"
               "\t\t[--no-dns] [--show-ips] [-o FIELDS] [-y IPINFO] [--aslookup]\n"
               "\t\t[-i INTERVAL] [-c COUNT] [-s PACKETSIZE] [-B BITPATTERN]\n"
               "\t\t[-Q TOS] [--mpls]\n"

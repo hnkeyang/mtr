@@ -27,7 +27,7 @@ enum { ActionNone,  ActionQuit,  ActionReset,  ActionDisplay,
 #endif
        ActionScrollDown, ActionScrollUp  };
 enum { DisplayReport, DisplayCurses, DisplayGTK, DisplaySplit, 
-       DisplayRaw,    DisplayXML,    DisplayCSV, DisplayTXT};
+       DisplayRaw,    DisplayXML,    DisplayJSON, DisplayCSV, DisplayTXT};
 
 /*  Prototypes for display.c  */
 void display_detect(int *argc, char ***argv);

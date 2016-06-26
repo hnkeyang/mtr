@@ -20,6 +20,7 @@
 
 #include <sys/types.h>
 #include <stdio.h>
+#include <ctype.h>
 #include <netdb.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
@@ -48,6 +49,12 @@ extern int MaxPing;
 extern int af;
 extern int reportwide;
 
+struct hinfo {
+  char     hostname[81];
+  char     ipaddr[40];
+};
+
+typedef struct hinfo Host;
 
 char *get_time_string (void) 
 {
@@ -73,6 +80,30 @@ static size_t snprint_addr(char *dst, size_t dst_len, ip_t *addr)
       return snprintf(dst, dst_len, "%s (%s)", host->h_name, strlongip(addr));
     else return snprintf(dst, dst_len, "%s", host->h_name);
   } else return snprintf(dst, dst_len, "%s", "???");
+}
+
+static int jsonprint_addr(Host *dst, ip_t *addr)
+{
+
+
+  if(addrcmp((void *) addr, (void *) &unspec_addr, af)) {
+    struct hostent *host = dns ? addr2host((void *) addr, af) : NULL;
+    if (!host)  {
+        sprintf(dst->ipaddr, "%s", strlongip(addr));
+        sprintf(dst->hostname, "%s", "unresolved");
+        return 0;
+    }
+    else  {
+        sprintf(dst->ipaddr, "%s", strlongip(addr));
+        sprintf(dst->hostname, "%s", host->h_name);
+        return 0;
+    }
+  } 
+  else  {
+    sprintf(dst->ipaddr, "%s", "???");
+    sprintf(dst->hostname, "%s", "unresolved");
+    return 0;
+  }
 }
 
 
@@ -386,4 +417,81 @@ void csv_close(time_t now)
     }
     printf("\n");
   }
+}
+
+void json_open(void)  {
+}
+
+void json_close(void)  {
+  int i, j, at, max;
+  ip_t *addr;
+  char name[81];
+  Host hop;
+  unsigned char myflds[] = "DRGJMXILSNABWV";
+
+  printf("{\"src\":\"%s\",\"dst\":\"%s\",", LocalHostname, Hostname);
+  printf("\"tos\":\"0x%X\",", tos);
+  if(cpacketsize >= 0) {
+    printf("\"packetsize\":%d,", cpacketsize);
+  } else {
+    printf("\"packetsize\":rand(%d-%d),",MINPACKET, -cpacketsize);
+  }
+  if( bitpattern>=0 ) {
+    printf("\"bitpattern\":\"0x%02X\",", (unsigned char)(bitpattern));
+  } else {
+    printf("\"bitpattern\":\"rand(0x00-FF)\",");
+  }
+  printf("\"packets\":%d,", MaxPing);
+  printf("\"hops\":[");
+
+  max = net_max();
+  at  = net_min();
+  for(; at < max; at++) {
+    addr = net_addr(at);
+    // snprint_addr(name, sizeof(name), addr);
+    //
+    
+    jsonprint_addr(&hop, addr);
+    printf("{\"hop\":%d,\"ipaddr\":\"%s\"", at+1, hop.ipaddr);
+    if(hop.hostname != NULL)  {
+        printf(",\"host\":\"%s\"", hop.hostname);
+    } 
+    
+#ifdef IPINFO
+    if(!ipinfo_no) {
+      char* fmtinfo = fmt_ipinfo(addr);
+      if (fmtinfo != NULL) fmtinfo = trim(fmtinfo);
+      printf(",\"asn\": \"%s\"", fmtinfo);
+    }
+#endif
+
+    for( i=0; myflds[i] != '\0'; i++ ) {
+      j = fld_index[myflds[i]];
+      // if (j <= 0) continue; // Field nr 0, " " shouldn't be printed in this method. 
+
+      strcpy(name, ",\"%s\":");
+      strcat(name, json_fields[j].format);
+
+      const char *title;
+      title = json_fields[j].title;
+
+      /* 1000.0 is a temporay hack for stats usec to ms, impacted net_loss. */
+      if( index( json_fields[j].format, 'f' ) ) {
+    printf( name,
+        title,
+        json_fields[j].net_xxx(at) /1000.0,
+        title );
+      } else {
+    printf( name,
+        title,
+        json_fields[j].net_xxx(at),
+        title );
+      }
+    }
+    printf("}");
+    if((at + 1) < max)  {
+      printf(",");
+    }
+  }
+  printf("]}");
 }
