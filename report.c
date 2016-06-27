@@ -113,6 +113,15 @@ void print_mpls(struct mplslen *mpls) {
   for (k=0; k < mpls->labels; k++)
     printf("       [MPLS: Lbl %lu Exp %u S %u TTL %u]\n", mpls->label[k], mpls->exp[k], mpls->s[k], mpls->ttl[k]);
 }
+
+void json_mpls(struct mplslen *mpls) {
+  int k;
+  printf(",\"mpls\": [");
+  for (k=0; k < mpls->labels; k++)  {
+    printf("{\"label\":%lu,\"exp\":%u,\"s\":%u,\"ttl\":%u}\n", mpls->label[k], mpls->exp[k], mpls->s[k], mpls->ttl[k]);
+  }
+  printf("]");
+}
 #endif
 
 void report_close(void) 
@@ -424,6 +433,8 @@ void json_open(void)  {
 
 void json_close(void)  {
   int i, j, at, max;
+  struct mplslen *mpls;
+  // struct mplslen *mplss;
   ip_t *addr;
   char name[81];
   Host hop;
@@ -448,6 +459,7 @@ void json_close(void)  {
   at  = net_min();
   for(; at < max; at++) {
     addr = net_addr(at);
+    mpls = net_mpls(at);
     // snprint_addr(name, sizeof(name), addr);
     //
     
@@ -462,6 +474,10 @@ void json_close(void)  {
       char* fmtinfo = fmt_ipinfo(addr);
       if (fmtinfo != NULL) fmtinfo = trim(fmtinfo);
       printf(",\"asn\": \"%s\"", fmtinfo);
+    }
+
+    if (enablempls && mpls->labels)  {
+      json_mpls(mpls);
     }
 #endif
 
