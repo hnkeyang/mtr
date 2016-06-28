@@ -33,8 +33,8 @@ AC_CHECK_FUNCS(attron fcntl)
 AC_CHECK_LIB(m, floor, , AC_MSG_ERROR(No math library found))
 
 AC_ARG_WITH(gtk,
-[  --without-gtk           Do not try to use GTK+ at all],
-WANTS_GTK=$withval, WANTS_GTK=yes)
+[  --with-gtk           Try to use GTK+ at all],
+WANTS_GTK=$withval, WANTS_GTK=no)
 
 AC_ARG_WITH([ipinfo],
 [  --without-ipinfo        Do not try to use ipinfo lookup at all],

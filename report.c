@@ -118,7 +118,7 @@ void json_mpls(struct mplslen *mpls) {
   int k;
   printf(",\"mpls\": [");
   for (k=0; k < mpls->labels; k++)  {
-    printf("{\"label\":%lu,\"exp\":%u,\"s\":%u,\"ttl\":%u}\n", mpls->label[k], mpls->exp[k], mpls->s[k], mpls->ttl[k]);
+    printf("{\"label\":%lu,\"trafficclass\":%u,\"bottomofstack\":%u,\"ttl\":%u}", mpls->label[k], mpls->exp[k], mpls->s[k], mpls->ttl[k]);
   }
   printf("]");
 }
