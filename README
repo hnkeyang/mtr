@@ -5,6 +5,30 @@ well as IP, Hostname and ASN (if available) normalized into their own
 JSON fields and in a single object.  Neither the CSV or XML output do 
 this for you.  
 
+EXAMPLE HOP
+
+```javascript
+    {
+      "hop": 12,
+      "ipaddr": "8.8.8.8",
+      "host": "google-public-dns-a.google.com",
+      "asn": "AS15169",
+      "drop": 0,
+      "received": 5,
+      "geomean": 4.7,
+      "jitter": 0.9,
+      "jitteravg": 0.7,
+      "jittermax": 1.7,
+      "jitterint": 3.4,
+      "losspercent": 0,
+      "sent": 5,
+      "last": 4.2,
+      "avg": 4.8,
+      "best": 4.2,
+      "worst": 5.9,
+      "stddev": 0.5
+    }
+```
 
 INSTALLING
 
