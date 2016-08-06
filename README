@@ -7,7 +7,7 @@ this for you.
 
 EXAMPLE HOP
 
-```javascript
+```
     {
       "hop": 12,
       "ipaddr": "8.8.8.8",
