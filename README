@@ -25,24 +25,16 @@ this for you.  I also changed the default to --without-gtk.
       "best": 4.2,
       "worst": 5.9,
       "stddev": 0.5
-    }
+}
 
 ## INSTALLING
 
-  If you're building this from a tarball, compiling mtr should be as
-  simple as:
+It should first call the "configure" script and then run "make" again
+with the makefile that "configure" just generated. 
 
-	make
-
-  It should first call the "configure" script and then run "make" again
-  with the makefile that "configure" just generated. 
-
-  If you're building from the git repository, you'll need to run:
-
-	./bootstrap.sh && ./configure && make
-
-  After compiling, install:
-
+If you're building from the git repository, you'll need to run:
+    ./bootstrap.sh && ./configure && make
+After compiling, install:
 	make install
 
   
