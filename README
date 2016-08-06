@@ -6,9 +6,8 @@ JSON fields and in a single object.  Neither the CSV or XML output do
 this for you.  
 
 EXAMPLE HOP
-
 ```
-{
+    {
       "hop": 12,
       "ipaddr": "8.8.8.8",
       "host": "google-public-dns-a.google.com",
@@ -27,7 +26,7 @@ EXAMPLE HOP
       "best": 4.2,
       "worst": 5.9,
       "stddev": 0.5
-}
+    }
 ```
 
 INSTALLING
