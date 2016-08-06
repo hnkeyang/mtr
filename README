@@ -28,7 +28,6 @@ EXAMPLE HOP
       "stddev": 0.5
     }
 ```
-
 INSTALLING
 
   If you're building this from a tarball, compiling mtr should be as
