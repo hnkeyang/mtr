@@ -3,7 +3,8 @@
 I wanted JSON output and I wanted all captured performance fields as 
 well as IP, Hostname and ASN (if available) normalized into their own
 JSON fields and in a single object.  Neither the CSV or XML output do 
-this for you.  I also changed the default to --without-gtk.
+this for you.  I also changed the default to --without-gtk.  
+See full blog post [here](http://www.biscaynedevops.com/home/mtr-with-json)
 
 
 
