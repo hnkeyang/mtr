@@ -10,6 +10,8 @@ See full blog post [here](http://www.biscaynedevops.com/home/mtr-with-json)
 
 ## EXAMPLE HOP
 ```
+{
+  "hops": [
     {
       "hop": 12,
       "ipaddr": "8.8.8.8",
@@ -30,6 +32,15 @@ See full blog post [here](http://www.biscaynedevops.com/home/mtr-with-json)
       "worst": 5.9,
       "stddev": 0.5
     }
+      ],
+  "packets": 100,
+  "bitpattern": "0x00",
+  "packetsize": 64,
+  "time": "2017-09-15 16:30:53",
+  "tos": "0x0",
+  "dst": "8.8.8.8",
+  "src": "hm01"
+}
 ```
 
 ## INSTALLING
