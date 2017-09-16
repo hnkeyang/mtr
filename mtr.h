@@ -75,3 +75,5 @@ typedef int socklen_t;
 
 char *
 trim(char * s);
+
+time_t probe_start_time;

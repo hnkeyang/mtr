@@ -58,6 +58,7 @@
 #define herror(str) fprintf(stderr, str ": error looking up \"%s\"\n", Hostname);
 #endif
 
+extern time_t probe_start_time;
 
 int   DisplayMode;
 int   display_mode;
@@ -591,6 +592,8 @@ void parse_mtr_options (char *string)
 
 int main(int argc, char **argv)
 {
+  
+  probe_start_time = time(0);
   struct hostent *  host                = NULL;
   int               net_preopen_result;
 #ifdef ENABLE_IPV6

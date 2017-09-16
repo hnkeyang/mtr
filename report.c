@@ -37,6 +37,7 @@
 
 #define MAXLOADBAL 5
 
+extern time_t probe_start_time;
 extern int dns;
 extern char LocalHostname[];
 extern char *Hostname;
@@ -440,8 +441,14 @@ void json_close(void)  {
   Host hop;
   unsigned char myflds[] = "DRGJMXILSNABWV";
 
+  char time_buf[255];
+  bzero(time_buf, sizeof(time_buf));
+  strftime(time_buf, 255, "%Y-%m-%d %H:%M:%S", localtime(&probe_start_time));
+
+
   printf("{\"src\":\"%s\",\"dst\":\"%s\",", LocalHostname, Hostname);
   printf("\"tos\":\"0x%X\",", tos);
+  printf("\"time\":\"%s\",", time_buf);
   if(cpacketsize >= 0) {
     printf("\"packetsize\":%d,", cpacketsize);
   } else {
